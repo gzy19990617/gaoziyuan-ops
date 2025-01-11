@@ -1,5 +1,3 @@
-// v0:global_memory最基本写法
-
 #include <bits/stdc++.h>
 #include <cuda.h>
 #include "cuda_runtime.h"
@@ -9,17 +7,30 @@
 
 #define THREAD_PER_BLOCK 256
 
-// 设计算法的时候按照block来设计，但是写程序的时候是按照thread来写的； trition是按照block来设计，block来写的
-// 索引容易乱套，最好为每一个block设计一个更进一步的索引
-// 绘制一个清晰的算法图很有必要
+// v3:避免banck conflict
 
-__global__ void reduce0(float* d_a, float* d_out) {
-    // printf("haha \n");
-    // 每个block里面的第一个索引
+// 为了提高内存读写带宽，共享内存被分割成了32个等大小的内存块，即bank。因为一个warp有32个线程，相当于一个线程对应一个内存bank
+
+// bank 0 : 0 32 64 96...
+// bank 1: 1 33 65 97...
+
+// 避免同一个warp的线程访问同一个bank，但如果是访问同一个bank中的同一位置，会产生广播，不会发生conflict
+
+__global__ void reduce1(float* d_a, float* d_out) {
+    __shared__ float s_a[THREAD_PER_BLOCK];
+
+    // 搬运数据到共享内存中，每个线程搬运一个元素
     float* input_begein = d_a + blockIdx.x * blockDim.x;
+    s_a[threadIdx.x] = input_begein[threadIdx.x];
+    // 搬运完需要进行同步
+    __syncthreads();
+
     for (int i = 1; i < blockDim.x; i *= 2) {
-        if (threadIdx.x % (2 * i) == 0) {
-            input_begein[threadIdx.x] = input_begein[threadIdx.x] + input_begein[threadIdx.x + i];
+        if (threadIdx.x < blockDim.x / (2 * i)) {
+            // 第一轮：0号线程负责，0+1. 1号线程负责，1+2. 以此类推
+            // 第二轮：0号线程负责，0+2. 1号线程负责，4+6. 以此类推
+            int index = threadIdx.x * (2 * i);
+            s_a[index] += s_a[index + i];
         }
         // 每一次要等这一轮计算完
         __syncthreads();
@@ -28,37 +39,32 @@ __global__ void reduce0(float* d_a, float* d_out) {
     if (threadIdx.x == 0) {
         d_out[blockIdx.x] = input_begein[0];
     }
-
-    // 思考过程, 需要先把流程图给画出来
-    // if (threadIdx.x == 0 or 2 or 4 or 6) {
-    //     input_begein[threadIdx] = input_begein[threadIdx] + input_begein[threadIdx + 1];
-    // }
-    // if (threadIdx.x == 0 or 4) {
-    //     input_begein[threadIdx] = input_begein[threadIdx] + input_begein[threadIdx + 2];
-    // }
-    // if (threadIdx.x == 0) {
-    //     input_begein[threadIdx] = input_begein[threadIdx] + input_begein[threadIdx + 4];
-    // }
 }
 
-// 另一种索引方式, 注意是全局索引
-// baseline, 使用global memory, 但把输入数据给修改了，这样并不好
-__global__ void reduce1(float* d_a, float* d_out) {
-    int tid = threadIdx.x;
-    // 线程的全局索引
-    int global_tid  = tid + blockIdx.x * blockDim.x;
-    for (int i = 1; i < blockDim.x; i *= 2) {
-        if (tid % (2 * i) == 0) {
-            d_a[global_tid] += d_a[global_tid + i];
-        }
-        // 每一次要等这一轮计算完
-        __syncthreads();
-    }
-    //最终每个block把计算结果放在第一个索引的位置
-    if (tid == 0) {
-        d_out[blockIdx.x] = d_a[global_tid];
-    }
-}
+// __global__ void reduce1(float* d_a, float* d_out) {
+//     __shared__ float s_a[THREAD_PER_BLOCK];
+    
+//     int tid = threadIdx.x;
+//     int global_tid = blockIdx.x * blockDim.x + tid;
+
+//     // 搬运数据到共享内存中，每个线程搬运一个元素
+//     s_a[tid] = d_a[global_tid];
+
+//     // 搬运完需要进行同步
+//     __syncthreads();
+
+//     for (int i = 1; i < blockDim.x; i *= 2) {
+//         if (tid % (2 * i) == 0) {
+//             d_a[global_tid] += d_a[global_tid + i];
+//         }
+//         // 每一次要等这一轮计算完
+//         __syncthreads();
+//     }
+//     //最终每个block把计算结果放在第一个索引的位置
+//     if (tid == 0) {
+//         d_out[blockIdx.x] = d_a[global_tid];
+//     }
+// }
 
 
 bool check(float *out,float *res,int n){
