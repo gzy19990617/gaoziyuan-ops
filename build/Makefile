@@ -111,43 +111,82 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named run_reduce
+# Target rules for targets named reduce_v5
 
 # Build rule for target.
-run_reduce: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 run_reduce
-.PHONY : run_reduce
+reduce_v5: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 reduce_v5
+.PHONY : reduce_v5
 
 # fast build rule for target.
-run_reduce/fast:
-	$(MAKE) -f CMakeFiles/run_reduce.dir/build.make CMakeFiles/run_reduce.dir/build
-.PHONY : run_reduce/fast
+reduce_v5/fast:
+	$(MAKE) -f CMakeFiles/reduce_v5.dir/build.make CMakeFiles/reduce_v5.dir/build
+.PHONY : reduce_v5/fast
 
 #=============================================================================
-# Target rules for targets named run_reduce_2
+# Target rules for targets named reduce_v0
 
 # Build rule for target.
-run_reduce_2: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 run_reduce_2
-.PHONY : run_reduce_2
+reduce_v0: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 reduce_v0
+.PHONY : reduce_v0
 
 # fast build rule for target.
-run_reduce_2/fast:
-	$(MAKE) -f CMakeFiles/run_reduce_2.dir/build.make CMakeFiles/run_reduce_2.dir/build
-.PHONY : run_reduce_2/fast
+reduce_v0/fast:
+	$(MAKE) -f CMakeFiles/reduce_v0.dir/build.make CMakeFiles/reduce_v0.dir/build
+.PHONY : reduce_v0/fast
 
 #=============================================================================
-# Target rules for targets named run_reduce_1
+# Target rules for targets named reduce_v4
 
 # Build rule for target.
-run_reduce_1: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 run_reduce_1
-.PHONY : run_reduce_1
+reduce_v4: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 reduce_v4
+.PHONY : reduce_v4
 
 # fast build rule for target.
-run_reduce_1/fast:
-	$(MAKE) -f CMakeFiles/run_reduce_1.dir/build.make CMakeFiles/run_reduce_1.dir/build
-.PHONY : run_reduce_1/fast
+reduce_v4/fast:
+	$(MAKE) -f CMakeFiles/reduce_v4.dir/build.make CMakeFiles/reduce_v4.dir/build
+.PHONY : reduce_v4/fast
+
+#=============================================================================
+# Target rules for targets named reduce_v3
+
+# Build rule for target.
+reduce_v3: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 reduce_v3
+.PHONY : reduce_v3
+
+# fast build rule for target.
+reduce_v3/fast:
+	$(MAKE) -f CMakeFiles/reduce_v3.dir/build.make CMakeFiles/reduce_v3.dir/build
+.PHONY : reduce_v3/fast
+
+#=============================================================================
+# Target rules for targets named reduce_v1
+
+# Build rule for target.
+reduce_v1: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 reduce_v1
+.PHONY : reduce_v1
+
+# fast build rule for target.
+reduce_v1/fast:
+	$(MAKE) -f CMakeFiles/reduce_v1.dir/build.make CMakeFiles/reduce_v1.dir/build
+.PHONY : reduce_v1/fast
+
+#=============================================================================
+# Target rules for targets named reduce_v2
+
+# Build rule for target.
+reduce_v2: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 reduce_v2
+.PHONY : reduce_v2
+
+# fast build rule for target.
+reduce_v2/fast:
+	$(MAKE) -f CMakeFiles/reduce_v2.dir/build.make CMakeFiles/reduce_v2.dir/build
+.PHONY : reduce_v2/fast
 
 reduce/reduce_v0.o: reduce/reduce_v0.cu.o
 
@@ -155,7 +194,7 @@ reduce/reduce_v0.o: reduce/reduce_v0.cu.o
 
 # target to build an object file
 reduce/reduce_v0.cu.o:
-	$(MAKE) -f CMakeFiles/run_reduce.dir/build.make CMakeFiles/run_reduce.dir/reduce/reduce_v0.cu.o
+	$(MAKE) -f CMakeFiles/reduce_v0.dir/build.make CMakeFiles/reduce_v0.dir/reduce/reduce_v0.cu.o
 .PHONY : reduce/reduce_v0.cu.o
 
 reduce/reduce_v0.i: reduce/reduce_v0.cu.i
@@ -164,7 +203,7 @@ reduce/reduce_v0.i: reduce/reduce_v0.cu.i
 
 # target to preprocess a source file
 reduce/reduce_v0.cu.i:
-	$(MAKE) -f CMakeFiles/run_reduce.dir/build.make CMakeFiles/run_reduce.dir/reduce/reduce_v0.cu.i
+	$(MAKE) -f CMakeFiles/reduce_v0.dir/build.make CMakeFiles/reduce_v0.dir/reduce/reduce_v0.cu.i
 .PHONY : reduce/reduce_v0.cu.i
 
 reduce/reduce_v0.s: reduce/reduce_v0.cu.s
@@ -173,7 +212,7 @@ reduce/reduce_v0.s: reduce/reduce_v0.cu.s
 
 # target to generate assembly for a file
 reduce/reduce_v0.cu.s:
-	$(MAKE) -f CMakeFiles/run_reduce.dir/build.make CMakeFiles/run_reduce.dir/reduce/reduce_v0.cu.s
+	$(MAKE) -f CMakeFiles/reduce_v0.dir/build.make CMakeFiles/reduce_v0.dir/reduce/reduce_v0.cu.s
 .PHONY : reduce/reduce_v0.cu.s
 
 reduce/reduce_v1.o: reduce/reduce_v1.cu.o
@@ -182,8 +221,7 @@ reduce/reduce_v1.o: reduce/reduce_v1.cu.o
 
 # target to build an object file
 reduce/reduce_v1.cu.o:
-	$(MAKE) -f CMakeFiles/run_reduce_2.dir/build.make CMakeFiles/run_reduce_2.dir/reduce/reduce_v1.cu.o
-	$(MAKE) -f CMakeFiles/run_reduce_1.dir/build.make CMakeFiles/run_reduce_1.dir/reduce/reduce_v1.cu.o
+	$(MAKE) -f CMakeFiles/reduce_v1.dir/build.make CMakeFiles/reduce_v1.dir/reduce/reduce_v1.cu.o
 .PHONY : reduce/reduce_v1.cu.o
 
 reduce/reduce_v1.i: reduce/reduce_v1.cu.i
@@ -192,8 +230,7 @@ reduce/reduce_v1.i: reduce/reduce_v1.cu.i
 
 # target to preprocess a source file
 reduce/reduce_v1.cu.i:
-	$(MAKE) -f CMakeFiles/run_reduce_2.dir/build.make CMakeFiles/run_reduce_2.dir/reduce/reduce_v1.cu.i
-	$(MAKE) -f CMakeFiles/run_reduce_1.dir/build.make CMakeFiles/run_reduce_1.dir/reduce/reduce_v1.cu.i
+	$(MAKE) -f CMakeFiles/reduce_v1.dir/build.make CMakeFiles/reduce_v1.dir/reduce/reduce_v1.cu.i
 .PHONY : reduce/reduce_v1.cu.i
 
 reduce/reduce_v1.s: reduce/reduce_v1.cu.s
@@ -202,9 +239,116 @@ reduce/reduce_v1.s: reduce/reduce_v1.cu.s
 
 # target to generate assembly for a file
 reduce/reduce_v1.cu.s:
-	$(MAKE) -f CMakeFiles/run_reduce_2.dir/build.make CMakeFiles/run_reduce_2.dir/reduce/reduce_v1.cu.s
-	$(MAKE) -f CMakeFiles/run_reduce_1.dir/build.make CMakeFiles/run_reduce_1.dir/reduce/reduce_v1.cu.s
+	$(MAKE) -f CMakeFiles/reduce_v1.dir/build.make CMakeFiles/reduce_v1.dir/reduce/reduce_v1.cu.s
 .PHONY : reduce/reduce_v1.cu.s
+
+reduce/reduce_v2.o: reduce/reduce_v2.cu.o
+
+.PHONY : reduce/reduce_v2.o
+
+# target to build an object file
+reduce/reduce_v2.cu.o:
+	$(MAKE) -f CMakeFiles/reduce_v2.dir/build.make CMakeFiles/reduce_v2.dir/reduce/reduce_v2.cu.o
+.PHONY : reduce/reduce_v2.cu.o
+
+reduce/reduce_v2.i: reduce/reduce_v2.cu.i
+
+.PHONY : reduce/reduce_v2.i
+
+# target to preprocess a source file
+reduce/reduce_v2.cu.i:
+	$(MAKE) -f CMakeFiles/reduce_v2.dir/build.make CMakeFiles/reduce_v2.dir/reduce/reduce_v2.cu.i
+.PHONY : reduce/reduce_v2.cu.i
+
+reduce/reduce_v2.s: reduce/reduce_v2.cu.s
+
+.PHONY : reduce/reduce_v2.s
+
+# target to generate assembly for a file
+reduce/reduce_v2.cu.s:
+	$(MAKE) -f CMakeFiles/reduce_v2.dir/build.make CMakeFiles/reduce_v2.dir/reduce/reduce_v2.cu.s
+.PHONY : reduce/reduce_v2.cu.s
+
+reduce/reduce_v3.o: reduce/reduce_v3.cu.o
+
+.PHONY : reduce/reduce_v3.o
+
+# target to build an object file
+reduce/reduce_v3.cu.o:
+	$(MAKE) -f CMakeFiles/reduce_v3.dir/build.make CMakeFiles/reduce_v3.dir/reduce/reduce_v3.cu.o
+.PHONY : reduce/reduce_v3.cu.o
+
+reduce/reduce_v3.i: reduce/reduce_v3.cu.i
+
+.PHONY : reduce/reduce_v3.i
+
+# target to preprocess a source file
+reduce/reduce_v3.cu.i:
+	$(MAKE) -f CMakeFiles/reduce_v3.dir/build.make CMakeFiles/reduce_v3.dir/reduce/reduce_v3.cu.i
+.PHONY : reduce/reduce_v3.cu.i
+
+reduce/reduce_v3.s: reduce/reduce_v3.cu.s
+
+.PHONY : reduce/reduce_v3.s
+
+# target to generate assembly for a file
+reduce/reduce_v3.cu.s:
+	$(MAKE) -f CMakeFiles/reduce_v3.dir/build.make CMakeFiles/reduce_v3.dir/reduce/reduce_v3.cu.s
+.PHONY : reduce/reduce_v3.cu.s
+
+reduce/reduce_v4.o: reduce/reduce_v4.cu.o
+
+.PHONY : reduce/reduce_v4.o
+
+# target to build an object file
+reduce/reduce_v4.cu.o:
+	$(MAKE) -f CMakeFiles/reduce_v4.dir/build.make CMakeFiles/reduce_v4.dir/reduce/reduce_v4.cu.o
+.PHONY : reduce/reduce_v4.cu.o
+
+reduce/reduce_v4.i: reduce/reduce_v4.cu.i
+
+.PHONY : reduce/reduce_v4.i
+
+# target to preprocess a source file
+reduce/reduce_v4.cu.i:
+	$(MAKE) -f CMakeFiles/reduce_v4.dir/build.make CMakeFiles/reduce_v4.dir/reduce/reduce_v4.cu.i
+.PHONY : reduce/reduce_v4.cu.i
+
+reduce/reduce_v4.s: reduce/reduce_v4.cu.s
+
+.PHONY : reduce/reduce_v4.s
+
+# target to generate assembly for a file
+reduce/reduce_v4.cu.s:
+	$(MAKE) -f CMakeFiles/reduce_v4.dir/build.make CMakeFiles/reduce_v4.dir/reduce/reduce_v4.cu.s
+.PHONY : reduce/reduce_v4.cu.s
+
+reduce/reduce_v5.o: reduce/reduce_v5.cu.o
+
+.PHONY : reduce/reduce_v5.o
+
+# target to build an object file
+reduce/reduce_v5.cu.o:
+	$(MAKE) -f CMakeFiles/reduce_v5.dir/build.make CMakeFiles/reduce_v5.dir/reduce/reduce_v5.cu.o
+.PHONY : reduce/reduce_v5.cu.o
+
+reduce/reduce_v5.i: reduce/reduce_v5.cu.i
+
+.PHONY : reduce/reduce_v5.i
+
+# target to preprocess a source file
+reduce/reduce_v5.cu.i:
+	$(MAKE) -f CMakeFiles/reduce_v5.dir/build.make CMakeFiles/reduce_v5.dir/reduce/reduce_v5.cu.i
+.PHONY : reduce/reduce_v5.cu.i
+
+reduce/reduce_v5.s: reduce/reduce_v5.cu.s
+
+.PHONY : reduce/reduce_v5.s
+
+# target to generate assembly for a file
+reduce/reduce_v5.cu.s:
+	$(MAKE) -f CMakeFiles/reduce_v5.dir/build.make CMakeFiles/reduce_v5.dir/reduce/reduce_v5.cu.s
+.PHONY : reduce/reduce_v5.cu.s
 
 # Help Target
 help:
@@ -212,17 +356,32 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... run_reduce"
 	@echo "... rebuild_cache"
-	@echo "... run_reduce_2"
-	@echo "... run_reduce_1"
 	@echo "... edit_cache"
+	@echo "... reduce_v5"
+	@echo "... reduce_v0"
+	@echo "... reduce_v4"
+	@echo "... reduce_v3"
+	@echo "... reduce_v1"
+	@echo "... reduce_v2"
 	@echo "... reduce/reduce_v0.o"
 	@echo "... reduce/reduce_v0.i"
 	@echo "... reduce/reduce_v0.s"
 	@echo "... reduce/reduce_v1.o"
 	@echo "... reduce/reduce_v1.i"
 	@echo "... reduce/reduce_v1.s"
+	@echo "... reduce/reduce_v2.o"
+	@echo "... reduce/reduce_v2.i"
+	@echo "... reduce/reduce_v2.s"
+	@echo "... reduce/reduce_v3.o"
+	@echo "... reduce/reduce_v3.i"
+	@echo "... reduce/reduce_v3.s"
+	@echo "... reduce/reduce_v4.o"
+	@echo "... reduce/reduce_v4.i"
+	@echo "... reduce/reduce_v4.s"
+	@echo "... reduce/reduce_v5.o"
+	@echo "... reduce/reduce_v5.i"
+	@echo "... reduce/reduce_v5.s"
 .PHONY : help
 
 

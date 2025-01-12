@@ -8,6 +8,7 @@
 #define THREAD_PER_BLOCK 256
 
 // v2:避免线程分化，一个warp是32个线程，同一个warp中的不同分支失去了并发行。
+// 0.638784 ms
 // 不同warp之间又保留了并发性，会存在不一致，容易导致死锁
 
 // a = (cond ? x[i]:0.f) 这种三元表达符号不会导致分支
@@ -34,35 +35,9 @@ __global__ void reduce1(float* d_a, float* d_out) {
     }
     //最终每个block把计算结果放在第一个索引的位置
     if (threadIdx.x == 0) {
-        d_out[blockIdx.x] = input_begein[0];
+        d_out[blockIdx.x] = s_a[0];
     }
 }
-
-// __global__ void reduce1(float* d_a, float* d_out) {
-//     __shared__ float s_a[THREAD_PER_BLOCK];
-    
-//     int tid = threadIdx.x;
-//     int global_tid = blockIdx.x * blockDim.x + tid;
-
-//     // 搬运数据到共享内存中，每个线程搬运一个元素
-//     s_a[tid] = d_a[global_tid];
-
-//     // 搬运完需要进行同步
-//     __syncthreads();
-
-//     for (int i = 1; i < blockDim.x; i *= 2) {
-//         if (tid % (2 * i) == 0) {
-//             d_a[global_tid] += d_a[global_tid + i];
-//         }
-//         // 每一次要等这一轮计算完
-//         __syncthreads();
-//     }
-//     //最终每个block把计算结果放在第一个索引的位置
-//     if (tid == 0) {
-//         d_out[blockIdx.x] = d_a[global_tid];
-//     }
-// }
-
 
 bool check(float *out,float *res,int n){
     for(int i=0;i<n;i++){
@@ -74,6 +49,7 @@ bool check(float *out,float *res,int n){
 }
 
 int main() {
+    float milliseconds = 0;
     printf("hello \n");
 
     const int N=32*1024*1024;
@@ -108,7 +84,16 @@ int main() {
     dim3 Block(THREAD_PER_BLOCK);
     
 
+    cudaEvent_t start, stop;
+    cudaEventCreate(&start);
+    cudaEventCreate(&stop);
+    cudaEventRecord(start);
+
     reduce1<<<Grid, Block>>>(d_a, d_out);
+
+    cudaEventRecord(stop);
+    cudaEventSynchronize(stop);
+    cudaEventElapsedTime(&milliseconds, start, stop);
 
     cudaMemcpy(out, d_out, block_num*sizeof(float),cudaMemcpyDeviceToHost);
 
@@ -120,6 +105,7 @@ int main() {
         }
         printf("\n");
     }
+    printf("reduce_v0 latency = %f ms\n", milliseconds);
 
     cudaFree(d_a);
     cudaFree(d_out);

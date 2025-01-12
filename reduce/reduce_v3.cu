@@ -8,13 +8,28 @@
 #define THREAD_PER_BLOCK 256
 
 // v3:避免banck conflict
+// 0.303648 ms
 
 // 为了提高内存读写带宽，共享内存被分割成了32个等大小的内存块，即bank。因为一个warp有32个线程，相当于一个线程对应一个内存bank
+
+// 避免同一个warp的线程访问同一个bank，但如果是访问同一个bank中的同一位置，会产生广播，不会发生conflict
+
 
 // bank 0 : 0 32 64 96...
 // bank 1: 1 33 65 97...
 
-// 避免同一个warp的线程访问同一个bank，但如果是访问同一个bank中的同一位置，会产生广播，不会发生conflict
+// 只看一个block中的thread 0 :
+// 第一次迭代，thread 0 访问 0，1 ，thread 16 访问 32，33， 0/32都在bank0，同一个warp访问同一块warp了
+
+// 优化后，每次一个thread访问0和总数据的一半
+// 第一次迭代：
+// thread0访问：0，128
+// thread8:8,136
+// thread16:16,144
+// 第二次迭代：
+// thread0访问：0，64
+// thread8:8,72
+// thread16:16,60
 
 __global__ void reduce1(float* d_a, float* d_out) {
     __shared__ float s_a[THREAD_PER_BLOCK];
@@ -25,44 +40,34 @@ __global__ void reduce1(float* d_a, float* d_out) {
     // 搬运完需要进行同步
     __syncthreads();
 
-    for (int i = 1; i < blockDim.x; i *= 2) {
-        if (threadIdx.x < blockDim.x / (2 * i)) {
-            // 第一轮：0号线程负责，0+1. 1号线程负责，1+2. 以此类推
-            // 第二轮：0号线程负责，0+2. 1号线程负责，4+6. 以此类推
-            int index = threadIdx.x * (2 * i);
-            s_a[index] += s_a[index + i];
+    for (int i = blockDim.x / 2; i > 0; i /= 2) {
+        if (threadIdx.x < i) {
+            s_a[threadIdx.x] += s_a[threadIdx.x + i];
         }
-        // 每一次要等这一轮计算完
         __syncthreads();
     }
-    //最终每个block把计算结果放在第一个索引的位置
     if (threadIdx.x == 0) {
-        d_out[blockIdx.x] = input_begein[0];
+        d_out[blockIdx.x] = s_a[0];
     }
 }
 
 // __global__ void reduce1(float* d_a, float* d_out) {
 //     __shared__ float s_a[THREAD_PER_BLOCK];
-    
-//     int tid = threadIdx.x;
-//     int global_tid = blockIdx.x * blockDim.x + tid;
 
 //     // 搬运数据到共享内存中，每个线程搬运一个元素
-//     s_a[tid] = d_a[global_tid];
-
+//     int global_id = blockDim.x * blockIdx.x + threadIdx.x;
+//     s_a[threadIdx.x] = d_a[global_id];
 //     // 搬运完需要进行同步
 //     __syncthreads();
 
-//     for (int i = 1; i < blockDim.x; i *= 2) {
-//         if (tid % (2 * i) == 0) {
-//             d_a[global_tid] += d_a[global_tid + i];
+//     for (int i = blockDim.x / 2; i > 0; i =/2) {
+//         if (threadIdx.x < i) {
+//             s_a[threadIdx.x] += s_a[threadIdx.x + i];
 //         }
-//         // 每一次要等这一轮计算完
 //         __syncthreads();
 //     }
-//     //最终每个block把计算结果放在第一个索引的位置
-//     if (tid == 0) {
-//         d_out[blockIdx.x] = d_a[global_tid];
+//     if (threadIdx.x == 0) {
+//         d_out[blockIdx.x] = d_a[global_id];
 //     }
 // }
 
@@ -77,6 +82,7 @@ bool check(float *out,float *res,int n){
 }
 
 int main() {
+    float milliseconds = 0;
     printf("hello \n");
 
     const int N=32*1024*1024;
@@ -110,8 +116,18 @@ int main() {
     dim3 Grid(block_num);
     dim3 Block(THREAD_PER_BLOCK);
     
+    cudaEvent_t start, stop;
+    cudaEventCreate(&start);
+    cudaEventCreate(&stop);
+    cudaEventRecord(start);
+
 
     reduce1<<<Grid, Block>>>(d_a, d_out);
+
+    cudaEventRecord(stop);
+    cudaEventSynchronize(stop);
+    cudaEventElapsedTime(&milliseconds, start, stop);
+
 
     cudaMemcpy(out, d_out, block_num*sizeof(float),cudaMemcpyDeviceToHost);
 
@@ -123,6 +139,8 @@ int main() {
         }
         printf("\n");
     }
+
+    printf("reduce latency = %f ms\n", milliseconds);
 
     cudaFree(d_a);
     cudaFree(d_out);

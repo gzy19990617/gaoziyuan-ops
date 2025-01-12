@@ -13,6 +13,8 @@
 // 索引容易乱套，最好为每一个block设计一个更进一步的索引
 // 绘制一个清晰的算法图很有必要
 
+// 0.760288 ms
+
 __global__ void reduce0(float* d_a, float* d_out) {
     // printf("haha \n");
     // 每个block里面的第一个索引
@@ -71,6 +73,7 @@ bool check(float *out,float *res,int n){
 }
 
 int main() {
+    float milliseconds = 0;
     printf("hello \n");
 
     const int N=32*1024*1024;
@@ -105,7 +108,17 @@ int main() {
     dim3 Block(THREAD_PER_BLOCK);
     
 
+    cudaEvent_t start, stop;
+    cudaEventCreate(&start);
+    cudaEventCreate(&stop);
+    cudaEventRecord(start);
+
     reduce1<<<Grid, Block>>>(d_a, d_out);
+
+    cudaEventRecord(stop);
+    cudaEventSynchronize(stop);
+    cudaEventElapsedTime(&milliseconds, start, stop);
+
 
     cudaMemcpy(out, d_out, block_num*sizeof(float),cudaMemcpyDeviceToHost);
 
@@ -117,6 +130,7 @@ int main() {
         }
         printf("\n");
     }
+    printf("reduce_v0 latency = %f ms\n", milliseconds);
 
     cudaFree(d_a);
     cudaFree(d_out);

@@ -53,9 +53,12 @@ CMAKE_BINARY_DIR = /gaoziyuan_ssd1n1/learn/gaoziyuan-ops/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/run_reduce.dir/all
-all: CMakeFiles/run_reduce_2.dir/all
-all: CMakeFiles/run_reduce_1.dir/all
+all: CMakeFiles/reduce_v5.dir/all
+all: CMakeFiles/reduce_v0.dir/all
+all: CMakeFiles/reduce_v4.dir/all
+all: CMakeFiles/reduce_v3.dir/all
+all: CMakeFiles/reduce_v1.dir/all
+all: CMakeFiles/reduce_v2.dir/all
 
 .PHONY : all
 
@@ -65,92 +68,176 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/run_reduce.dir/clean
-clean: CMakeFiles/run_reduce_2.dir/clean
-clean: CMakeFiles/run_reduce_1.dir/clean
+clean: CMakeFiles/reduce_v5.dir/clean
+clean: CMakeFiles/reduce_v0.dir/clean
+clean: CMakeFiles/reduce_v4.dir/clean
+clean: CMakeFiles/reduce_v3.dir/clean
+clean: CMakeFiles/reduce_v1.dir/clean
+clean: CMakeFiles/reduce_v2.dir/clean
 
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/run_reduce.dir
+# Target rules for target CMakeFiles/reduce_v5.dir
 
 # All Build rule for target.
-CMakeFiles/run_reduce.dir/all:
-	$(MAKE) -f CMakeFiles/run_reduce.dir/build.make CMakeFiles/run_reduce.dir/depend
-	$(MAKE) -f CMakeFiles/run_reduce.dir/build.make CMakeFiles/run_reduce.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/gaoziyuan_ssd1n1/learn/gaoziyuan-ops/build/CMakeFiles --progress-num=1,2 "Built target run_reduce"
-.PHONY : CMakeFiles/run_reduce.dir/all
+CMakeFiles/reduce_v5.dir/all:
+	$(MAKE) -f CMakeFiles/reduce_v5.dir/build.make CMakeFiles/reduce_v5.dir/depend
+	$(MAKE) -f CMakeFiles/reduce_v5.dir/build.make CMakeFiles/reduce_v5.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/gaoziyuan_ssd1n1/learn/gaoziyuan-ops/build/CMakeFiles --progress-num=11,12 "Built target reduce_v5"
+.PHONY : CMakeFiles/reduce_v5.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/run_reduce.dir/rule: cmake_check_build_system
+CMakeFiles/reduce_v5.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /gaoziyuan_ssd1n1/learn/gaoziyuan-ops/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/run_reduce.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/reduce_v5.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /gaoziyuan_ssd1n1/learn/gaoziyuan-ops/build/CMakeFiles 0
-.PHONY : CMakeFiles/run_reduce.dir/rule
+.PHONY : CMakeFiles/reduce_v5.dir/rule
 
 # Convenience name for target.
-run_reduce: CMakeFiles/run_reduce.dir/rule
+reduce_v5: CMakeFiles/reduce_v5.dir/rule
 
-.PHONY : run_reduce
+.PHONY : reduce_v5
 
 # clean rule for target.
-CMakeFiles/run_reduce.dir/clean:
-	$(MAKE) -f CMakeFiles/run_reduce.dir/build.make CMakeFiles/run_reduce.dir/clean
-.PHONY : CMakeFiles/run_reduce.dir/clean
+CMakeFiles/reduce_v5.dir/clean:
+	$(MAKE) -f CMakeFiles/reduce_v5.dir/build.make CMakeFiles/reduce_v5.dir/clean
+.PHONY : CMakeFiles/reduce_v5.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/run_reduce_2.dir
+# Target rules for target CMakeFiles/reduce_v0.dir
 
 # All Build rule for target.
-CMakeFiles/run_reduce_2.dir/all:
-	$(MAKE) -f CMakeFiles/run_reduce_2.dir/build.make CMakeFiles/run_reduce_2.dir/depend
-	$(MAKE) -f CMakeFiles/run_reduce_2.dir/build.make CMakeFiles/run_reduce_2.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/gaoziyuan_ssd1n1/learn/gaoziyuan-ops/build/CMakeFiles --progress-num=5,6 "Built target run_reduce_2"
-.PHONY : CMakeFiles/run_reduce_2.dir/all
+CMakeFiles/reduce_v0.dir/all:
+	$(MAKE) -f CMakeFiles/reduce_v0.dir/build.make CMakeFiles/reduce_v0.dir/depend
+	$(MAKE) -f CMakeFiles/reduce_v0.dir/build.make CMakeFiles/reduce_v0.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/gaoziyuan_ssd1n1/learn/gaoziyuan-ops/build/CMakeFiles --progress-num=1,2 "Built target reduce_v0"
+.PHONY : CMakeFiles/reduce_v0.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/run_reduce_2.dir/rule: cmake_check_build_system
+CMakeFiles/reduce_v0.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /gaoziyuan_ssd1n1/learn/gaoziyuan-ops/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/run_reduce_2.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/reduce_v0.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /gaoziyuan_ssd1n1/learn/gaoziyuan-ops/build/CMakeFiles 0
-.PHONY : CMakeFiles/run_reduce_2.dir/rule
+.PHONY : CMakeFiles/reduce_v0.dir/rule
 
 # Convenience name for target.
-run_reduce_2: CMakeFiles/run_reduce_2.dir/rule
+reduce_v0: CMakeFiles/reduce_v0.dir/rule
 
-.PHONY : run_reduce_2
+.PHONY : reduce_v0
 
 # clean rule for target.
-CMakeFiles/run_reduce_2.dir/clean:
-	$(MAKE) -f CMakeFiles/run_reduce_2.dir/build.make CMakeFiles/run_reduce_2.dir/clean
-.PHONY : CMakeFiles/run_reduce_2.dir/clean
+CMakeFiles/reduce_v0.dir/clean:
+	$(MAKE) -f CMakeFiles/reduce_v0.dir/build.make CMakeFiles/reduce_v0.dir/clean
+.PHONY : CMakeFiles/reduce_v0.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/run_reduce_1.dir
+# Target rules for target CMakeFiles/reduce_v4.dir
 
 # All Build rule for target.
-CMakeFiles/run_reduce_1.dir/all:
-	$(MAKE) -f CMakeFiles/run_reduce_1.dir/build.make CMakeFiles/run_reduce_1.dir/depend
-	$(MAKE) -f CMakeFiles/run_reduce_1.dir/build.make CMakeFiles/run_reduce_1.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/gaoziyuan_ssd1n1/learn/gaoziyuan-ops/build/CMakeFiles --progress-num=3,4 "Built target run_reduce_1"
-.PHONY : CMakeFiles/run_reduce_1.dir/all
+CMakeFiles/reduce_v4.dir/all:
+	$(MAKE) -f CMakeFiles/reduce_v4.dir/build.make CMakeFiles/reduce_v4.dir/depend
+	$(MAKE) -f CMakeFiles/reduce_v4.dir/build.make CMakeFiles/reduce_v4.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/gaoziyuan_ssd1n1/learn/gaoziyuan-ops/build/CMakeFiles --progress-num=9,10 "Built target reduce_v4"
+.PHONY : CMakeFiles/reduce_v4.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/run_reduce_1.dir/rule: cmake_check_build_system
+CMakeFiles/reduce_v4.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /gaoziyuan_ssd1n1/learn/gaoziyuan-ops/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/run_reduce_1.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/reduce_v4.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /gaoziyuan_ssd1n1/learn/gaoziyuan-ops/build/CMakeFiles 0
-.PHONY : CMakeFiles/run_reduce_1.dir/rule
+.PHONY : CMakeFiles/reduce_v4.dir/rule
 
 # Convenience name for target.
-run_reduce_1: CMakeFiles/run_reduce_1.dir/rule
+reduce_v4: CMakeFiles/reduce_v4.dir/rule
 
-.PHONY : run_reduce_1
+.PHONY : reduce_v4
 
 # clean rule for target.
-CMakeFiles/run_reduce_1.dir/clean:
-	$(MAKE) -f CMakeFiles/run_reduce_1.dir/build.make CMakeFiles/run_reduce_1.dir/clean
-.PHONY : CMakeFiles/run_reduce_1.dir/clean
+CMakeFiles/reduce_v4.dir/clean:
+	$(MAKE) -f CMakeFiles/reduce_v4.dir/build.make CMakeFiles/reduce_v4.dir/clean
+.PHONY : CMakeFiles/reduce_v4.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/reduce_v3.dir
+
+# All Build rule for target.
+CMakeFiles/reduce_v3.dir/all:
+	$(MAKE) -f CMakeFiles/reduce_v3.dir/build.make CMakeFiles/reduce_v3.dir/depend
+	$(MAKE) -f CMakeFiles/reduce_v3.dir/build.make CMakeFiles/reduce_v3.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/gaoziyuan_ssd1n1/learn/gaoziyuan-ops/build/CMakeFiles --progress-num=7,8 "Built target reduce_v3"
+.PHONY : CMakeFiles/reduce_v3.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/reduce_v3.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /gaoziyuan_ssd1n1/learn/gaoziyuan-ops/build/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/reduce_v3.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /gaoziyuan_ssd1n1/learn/gaoziyuan-ops/build/CMakeFiles 0
+.PHONY : CMakeFiles/reduce_v3.dir/rule
+
+# Convenience name for target.
+reduce_v3: CMakeFiles/reduce_v3.dir/rule
+
+.PHONY : reduce_v3
+
+# clean rule for target.
+CMakeFiles/reduce_v3.dir/clean:
+	$(MAKE) -f CMakeFiles/reduce_v3.dir/build.make CMakeFiles/reduce_v3.dir/clean
+.PHONY : CMakeFiles/reduce_v3.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/reduce_v1.dir
+
+# All Build rule for target.
+CMakeFiles/reduce_v1.dir/all:
+	$(MAKE) -f CMakeFiles/reduce_v1.dir/build.make CMakeFiles/reduce_v1.dir/depend
+	$(MAKE) -f CMakeFiles/reduce_v1.dir/build.make CMakeFiles/reduce_v1.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/gaoziyuan_ssd1n1/learn/gaoziyuan-ops/build/CMakeFiles --progress-num=3,4 "Built target reduce_v1"
+.PHONY : CMakeFiles/reduce_v1.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/reduce_v1.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /gaoziyuan_ssd1n1/learn/gaoziyuan-ops/build/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/reduce_v1.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /gaoziyuan_ssd1n1/learn/gaoziyuan-ops/build/CMakeFiles 0
+.PHONY : CMakeFiles/reduce_v1.dir/rule
+
+# Convenience name for target.
+reduce_v1: CMakeFiles/reduce_v1.dir/rule
+
+.PHONY : reduce_v1
+
+# clean rule for target.
+CMakeFiles/reduce_v1.dir/clean:
+	$(MAKE) -f CMakeFiles/reduce_v1.dir/build.make CMakeFiles/reduce_v1.dir/clean
+.PHONY : CMakeFiles/reduce_v1.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/reduce_v2.dir
+
+# All Build rule for target.
+CMakeFiles/reduce_v2.dir/all:
+	$(MAKE) -f CMakeFiles/reduce_v2.dir/build.make CMakeFiles/reduce_v2.dir/depend
+	$(MAKE) -f CMakeFiles/reduce_v2.dir/build.make CMakeFiles/reduce_v2.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/gaoziyuan_ssd1n1/learn/gaoziyuan-ops/build/CMakeFiles --progress-num=5,6 "Built target reduce_v2"
+.PHONY : CMakeFiles/reduce_v2.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/reduce_v2.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /gaoziyuan_ssd1n1/learn/gaoziyuan-ops/build/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/reduce_v2.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /gaoziyuan_ssd1n1/learn/gaoziyuan-ops/build/CMakeFiles 0
+.PHONY : CMakeFiles/reduce_v2.dir/rule
+
+# Convenience name for target.
+reduce_v2: CMakeFiles/reduce_v2.dir/rule
+
+.PHONY : reduce_v2
+
+# clean rule for target.
+CMakeFiles/reduce_v2.dir/clean:
+	$(MAKE) -f CMakeFiles/reduce_v2.dir/build.make CMakeFiles/reduce_v2.dir/clean
+.PHONY : CMakeFiles/reduce_v2.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

@@ -1,4 +1,4 @@
-// v1:使用shared_memory进行优化
+
 
 #include <bits/stdc++.h>
 #include <cuda.h>
@@ -8,6 +8,8 @@
 #include <sys/time.h>
 
 #define THREAD_PER_BLOCK 256
+// v1:使用shared_memory进行优化
+//  0.708352 ms
 
 __global__ void reduce1(float* d_a, float* d_out) {
     __shared__ float s_a[THREAD_PER_BLOCK];
@@ -67,6 +69,7 @@ bool check(float *out,float *res,int n){
 }
 
 int main() {
+    float milliseconds = 0;
     printf("hello \n");
 
     const int N=32*1024*1024;
@@ -100,8 +103,18 @@ int main() {
     dim3 Grid(block_num);
     dim3 Block(THREAD_PER_BLOCK);
     
+    cudaEvent_t start, stop;
+    cudaEventCreate(&start);
+    cudaEventCreate(&stop);
+    cudaEventRecord(start);
+
 
     reduce1<<<Grid, Block>>>(d_a, d_out);
+
+    cudaEventRecord(stop);
+    cudaEventSynchronize(stop);
+    cudaEventElapsedTime(&milliseconds, start, stop);
+
 
     cudaMemcpy(out, d_out, block_num*sizeof(float),cudaMemcpyDeviceToHost);
 
@@ -113,6 +126,7 @@ int main() {
         }
         printf("\n");
     }
+    printf("reduce_v0 latency = %f ms\n", milliseconds);
 
     cudaFree(d_a);
     cudaFree(d_out);

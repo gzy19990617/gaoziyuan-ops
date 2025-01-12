@@ -9,5 +9,7 @@ bandwidth = 【内存频率】*【Prefetch】*【内存带宽】/【8】
 带宽：理论值
 吞吐量：实际值
 
+参考link:
+https://github.com/gzy19990617/How_to_optimize_in_GPU/blob/master/reduce/README.md
 
 

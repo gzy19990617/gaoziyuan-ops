@@ -1,0 +1,1 @@
+/usr/local/bin/g++  CMakeFiles/reduce_v0.dir/reduce/reduce_v0.cu.o -o reduce_v0  -lcudart -lcudadevrt  -L"/usr/local/cuda/targets/x86_64-linux/lib/stubs" -L"/usr/local/cuda/targets/x86_64-linux/lib" -lcudadevrt -lcudart_static -lrt -lpthread -ldl
