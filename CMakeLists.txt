@@ -78,4 +78,30 @@ target_link_libraries(
     -lcudart
     -lcudadevrt)
 
+# reduce
+add_executable(reduce_v6
+    reduce/reduce_v6.cu
+)
+target_link_libraries(
+    reduce_v6 PUBLIC
+    -lcudart
+    -lcudadevrt)
+
+# reduce
+add_executable(reduce_v7
+    reduce/reduce_v7.cu
+)
+target_link_libraries(
+    reduce_v7 PUBLIC
+    -lcudart
+    -lcudadevrt)
+
+# reduce
+add_executable(reduce_v8
+    reduce/reduce_v8.cu
+)
+target_link_libraries(
+    reduce_v8 PUBLIC
+    -lcudart
+    -lcudadevrt)
 

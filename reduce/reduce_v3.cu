@@ -26,10 +26,14 @@
 // thread0访问：0，128
 // thread8:8,136
 // thread16:16,144
+// thread16:32,128 + 32
 // 第二次迭代：
 // thread0访问：0，64
 // thread8:8,72
 // thread16:16,60
+
+// 几号线程就访问几号bank
+// 可以通过ncu来判断是否有bank conflict
 
 __global__ void reduce1(float* d_a, float* d_out) {
     __shared__ float s_a[THREAD_PER_BLOCK];
@@ -40,7 +44,9 @@ __global__ void reduce1(float* d_a, float* d_out) {
     // 搬运完需要进行同步
     __syncthreads();
 
+    // 每次加block_size的一半
     for (int i = blockDim.x / 2; i > 0; i /= 2) {
+        // 每次block_size的一半参加计算
         if (threadIdx.x < i) {
             s_a[threadIdx.x] += s_a[threadIdx.x + i];
         }

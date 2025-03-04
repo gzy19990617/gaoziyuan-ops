@@ -7,22 +7,34 @@
 
 #define THREAD_PER_BLOCK 256
 
-// v5:展开最后一维，减少同步
+// v5:展开最后一个warp，减少同步
 
 __global__ void reduce1(float* d_a, float* d_out) {
-    __shared__ float s_a[THREAD_PER_BLOCK];
+    volatile __shared__ float s_a[THREAD_PER_BLOCK]; // 不加volatile,会导致精度diff,volatile每次从shaerd取，防止编译器的优化
 
+    int tid = threadIdx.x;
     float* input_begein = d_a + blockIdx.x * blockDim.x * 2;
     s_a[threadIdx.x] = input_begein[threadIdx.x] + input_begein[threadIdx.x + blockDim.x];
     // 搬运完需要进行同步
     __syncthreads();
 
-    for (int i = blockDim.x / 2; i > 0; i /= 2) {
+    for (int i = blockDim.x / 2; i > 32; i /= 2) { // i > 32时才执行
         if (threadIdx.x < i) {
             s_a[threadIdx.x] += s_a[threadIdx.x + i];
+            // warp与warp之间没有办法同步，但warp内同线程是可以同步的，所以后面几次迭代不需要同步了
             __syncthreads();
         }
     }
+    if (tid < 32) {
+        s_a[tid] += s_a[tid + 32];
+        s_a[tid] += s_a[tid + 16];
+        s_a[tid] += s_a[tid + 8];
+        s_a[tid] += s_a[tid + 4];
+        s_a[tid] += s_a[tid + 2];
+        s_a[tid] += s_a[tid + 1];
+
+    }
+
     if (threadIdx.x == 0) {
         d_out[blockIdx.x] = s_a[0];
     }
@@ -98,18 +110,25 @@ int main() {
 
     dim3 Grid(block_num);
     dim3 Block(THREAD_PER_BLOCK);
+    // for (int i = 0; i < 10; i ++) {
+
+        cudaEvent_t start, stop;
+        cudaEventCreate(&start);
+        cudaEventCreate(&stop);
+        cudaEventRecord(start);
+
+
+        reduce1<<<Grid, Block>>>(d_a, d_out);
+
+        cudaEventRecord(stop);
+        cudaEventSynchronize(stop);
+        cudaEventElapsedTime(&milliseconds, start, stop);
+
+        printf("reduce latency = %f ms\n", milliseconds);
+
+
+    // }
     
-    cudaEvent_t start, stop;
-    cudaEventCreate(&start);
-    cudaEventCreate(&stop);
-    cudaEventRecord(start);
-
-
-    reduce1<<<Grid, Block>>>(d_a, d_out);
-
-    cudaEventRecord(stop);
-    cudaEventSynchronize(stop);
-    cudaEventElapsedTime(&milliseconds, start, stop);
 
 
     cudaMemcpy(out, d_out, block_num*sizeof(float),cudaMemcpyDeviceToHost);
@@ -122,8 +141,6 @@ int main() {
         }
         printf("\n");
     }
-
-    printf("reduce latency = %f ms\n", milliseconds);
 
     cudaFree(d_a);
     cudaFree(d_out);

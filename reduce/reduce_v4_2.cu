@@ -9,7 +9,7 @@
 
 // v4: 让每个线程做的事情更多
 // 0.234880 ms
-// planA:减少block数量；保持block中thread的数量；让每个thread处理更多的数据
+// planB:保持block数量；减少线程数量
 
 __global__ void reduce1(float* d_a, float* d_out) {
     __shared__ float s_a[THREAD_PER_BLOCK];
@@ -22,8 +22,8 @@ __global__ void reduce1(float* d_a, float* d_out) {
     for (int i = blockDim.x / 2; i > 0; i /= 2) {
         if (threadIdx.x < i) {
             s_a[threadIdx.x] += s_a[threadIdx.x + i];
-            __syncthreads();
         }
+         __syncthreads();
     }
     if (threadIdx.x == 0) {
         d_out[blockIdx.x] = s_a[0];
@@ -76,7 +76,7 @@ int main() {
     cudaMalloc((void **)&d_a,N*sizeof(float));
 
 
-    int block_num = N / THREAD_PER_BLOCK / 2;
+    int block_num = N / THREAD_PER_BLOCK / 2; // THREAD_PER_BLOCK变小了，为了保持Block_num不变，所以需要再除以2
 
     float *out = (float *)malloc((block_num * sizeof(float)));
     float *d_out;

@@ -25,8 +25,8 @@ __global__ void reduce1(float* d_a, float* d_out) {
 
     for (int i = 1; i < blockDim.x; i *= 2) {
         if (threadIdx.x < blockDim.x / (2 * i)) {
-            // 第一轮：0号线程负责，0+1. 1号线程负责，1+2. 以此类推
-            // 第二轮：0号线程负责，0+2. 1号线程负责，4+6. 以此类推
+            // 前一半的线程都做运算，后一半的线程什么都不做
+            // 0号线程处理第一0个第一个元素；1号线程处理第2个第3；2处理4、5；之前是0号处理0、1，2号处理2、3元素
             int index = threadIdx.x * (2 * i);
             s_a[index] += s_a[index + i];
         }

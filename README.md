@@ -13,3 +13,7 @@ bandwidth = 【内存频率】*【Prefetch】*【内存带宽】/【8】
 https://github.com/gzy19990617/How_to_optimize_in_GPU/blob/master/reduce/README.md
 
 
+关键点：
+warp divergence
+bank conflict
+shuffle

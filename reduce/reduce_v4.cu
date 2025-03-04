@@ -9,11 +9,12 @@
 
 // v4: 让每个线程做的事情更多
 // 0.236000 ms
-// planA:减少block数量；保持block中thread的数量；让每个thread处理更多的数据
+// planA:减少block数量；保持block中thread的数量，让每个thread处理更多的数据
 
 __global__ void reduce1(float* d_a, float* d_out) {
     __shared__ float s_a[THREAD_PER_BLOCK];
 
+    // 每个线程每次搬两个数据并做一次加法
     float* input_begein = d_a + blockIdx.x * blockDim.x * 2;
     s_a[threadIdx.x] = input_begein[threadIdx.x] + input_begein[threadIdx.x + blockDim.x];
     // 搬运完需要进行同步
@@ -22,8 +23,8 @@ __global__ void reduce1(float* d_a, float* d_out) {
     for (int i = blockDim.x / 2; i > 0; i /= 2) {
         if (threadIdx.x < i) {
             s_a[threadIdx.x] += s_a[threadIdx.x + i];
-            __syncthreads();
         }
+        __syncthreads();
     }
     if (threadIdx.x == 0) {
         d_out[blockIdx.x] = s_a[0];

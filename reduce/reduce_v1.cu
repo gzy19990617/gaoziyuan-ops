@@ -13,7 +13,6 @@
 
 __global__ void reduce1(float* d_a, float* d_out) {
     __shared__ float s_a[THREAD_PER_BLOCK];
-
     // 搬运数据到共享内存中，每个线程搬运一个元素
     float* input_begein = d_a + blockIdx.x * blockDim.x;
     s_a[threadIdx.x] = input_begein[threadIdx.x];
