@@ -6,60 +6,58 @@
 #include <sys/time.h>
 
 #define THREAD_PER_BLOCK 256
-
+#define WARP_SIZE 32
 // v8:使用shuffle
 
-__global__ void reduce1(float* d_a, float* d_out) {
-    volatile __shared__ float s_a[THREAD_PER_BLOCK]; // 不加volatile,会导致精度diff,volatile每次从shaerd取，防止编译器的优化
+// Shuffle指令是一组针对warp的指令。
+// Shuffle指令最重要的特性就是warp内的寄存器可以相互访问。
+// 在没有shuffle指令的时候，各个线程在进行通信时只能通过shared memory来访问彼此的寄存器。
+// 而采用了shuffle指令之后，warp内的线程可以直接对其他线程的寄存器进行访存。
 
+template<unsigned int NUM_PER_BLOCK>
+__global__ void reduce1(float* d_a, float* d_out) {
+    // 对寄存器进行操作
+
+    float sum = 0.f;
     int tid = threadIdx.x;
-    float* input_begein = d_a + blockIdx.x * blockDim.x * 2;
-    s_a[threadIdx.x] = input_begein[threadIdx.x] + input_begein[threadIdx.x + blockDim.x];
-    // 搬运完需要进行同步
+    float* input_begein = d_a + blockIdx.x * NUM_PER_BLOCK;
+    for (int i = 0 ;i < NUM_PER_BLOCK / THREAD_PER_BLOCK; i++) {
+        sum += input_begein[tid + i* THREAD_PER_BLOCK];
+    }
+
+    // __syncthreads();此时不需要同步了，针对一个warp进行规约，warp自带同步
+    sum += __shfl_down_sync(0xffffffff, sum, 16);
+    sum += __shfl_down_sync(0xffffffff, sum, 8);
+    sum += __shfl_down_sync(0xffffffff, sum, 4);
+    sum += __shfl_down_sync(0xffffffff, sum, 2);
+    sum += __shfl_down_sync(0xffffffff, sum, 1);
+
+    // 当前每个warp里面都有一个num，借助shared_memory进行规约,因为不同warp之间不能直接通信
+    // 一个block里面最多有32个warp，每个warp里面有32个数，1024个线程，新的架构可能更多
+    __shared__ float wrapLevelSums[32];
+    const int laneId = threadIdx.x % WARP_SIZE; // 每个warp里面的线程id
+    const int warpId = threadIdx.x / WARP_SIZE; // 每个warp的id
+
+    if (laneId == 0) {
+        wrapLevelSums[warpId] = sum;
+    }
     __syncthreads();
 
-#pragma unroll
-    for (int i = blockDim.x / 2; i > 32; i /= 2) { // i > 32时才执行
-        if (threadIdx.x < i) {
-            s_a[threadIdx.x] += s_a[threadIdx.x + i];
-            // warp与warp之间没有办法同步，但warp内同线程是可以同步的，所以后面几次迭代不需要同步了
-            __syncthreads();
-        }
-    }
-    if (tid < 32) {
-        s_a[tid] += s_a[tid + 32];
-        s_a[tid] += s_a[tid + 16];
-        s_a[tid] += s_a[tid + 8];
-        s_a[tid] += s_a[tid + 4];
-        s_a[tid] += s_a[tid + 2];
-        s_a[tid] += s_a[tid + 1];
+    // 剩余的计算使用第一个Warp来做
+    if (warpId == 0) {
+        // shared_memory 到寄存器, 一个wrap里面后面的数需要为0，否则会出错
+        sum = (laneId < blockDim.x / 32) ? wrapLevelSums[laneId] : 0;
+        sum += __shfl_down_sync(0xffffffff, sum, 16);
+        sum += __shfl_down_sync(0xffffffff, sum, 8);
+        sum += __shfl_down_sync(0xffffffff, sum, 4);
+        sum += __shfl_down_sync(0xffffffff, sum, 2);
+        sum += __shfl_down_sync(0xffffffff, sum, 1);
 
     }
-
     if (threadIdx.x == 0) {
-        d_out[blockIdx.x] = s_a[0];
+        d_out[blockIdx.x] = sum;
     }
 }
-
-// __global__ void reduce1(float* d_a, float* d_out) {
-//     __shared__ float s_a[THREAD_PER_BLOCK];
-
-//     // 搬运数据到共享内存中，每个线程搬运一个元素
-//     int global_id = blockDim.x * blockIdx.x + threadIdx.x;
-//     s_a[threadIdx.x] = d_a[global_id];
-//     // 搬运完需要进行同步
-//     __syncthreads();
-
-//     for (int i = blockDim.x / 2; i > 0; i =/2) {
-//         if (threadIdx.x < i) {
-//             s_a[threadIdx.x] += s_a[threadIdx.x + i];
-//         }
-//         __syncthreads();
-//     }
-//     if (threadIdx.x == 0) {
-//         d_out[blockIdx.x] = d_a[global_id];
-//     }
-// }
 
 
 bool check(float *out,float *res,int n){
@@ -70,7 +68,6 @@ bool check(float *out,float *res,int n){
     }
     return true;
 }
-
 int main() {
     float milliseconds = 0;
     printf("hello \n");
@@ -86,8 +83,10 @@ int main() {
     float *d_a;
     cudaMalloc((void **)&d_a,N*sizeof(float));
 
+    constexpr int block_num = 1024;
+    constexpr int num_per_block = N / block_num;
 
-    int block_num = N / THREAD_PER_BLOCK / 2;
+    // int block_num = N / THREAD_PER_BLOCK / 2;
 
     float *out = (float *)malloc((block_num * sizeof(float)));
     float *d_out;
@@ -96,13 +95,13 @@ int main() {
     float *res=(float *)malloc((N/THREAD_PER_BLOCK)*sizeof(float));
 
     for(int i=0;i<N;i++){
-        a[i]=1.2f;
+        a[i]=1.f;
     }
 
     for(int i=0;i<block_num;i++){
         float cur=0;
-        for(int j=0;j<THREAD_PER_BLOCK*2;j++){
-            cur+=a[i*THREAD_PER_BLOCK*2+j];
+        for(int j=0;j<num_per_block;j++){
+            cur+=a[i*num_per_block+j];
         }
         res[i]=cur;
     }
@@ -119,7 +118,7 @@ int main() {
         cudaEventRecord(start);
 
 
-        reduce1<<<Grid, Block>>>(d_a, d_out);
+        reduce1<num_per_block><<<Grid, Block>>>(d_a, d_out);
 
         cudaEventRecord(stop);
         cudaEventSynchronize(stop);
@@ -139,6 +138,11 @@ int main() {
         printf("the ans is wrong\n");
         for(int i=0;i<block_num;i++){
             printf("%lf ",out[i]);
+        }
+        printf("\n");
+        printf("the ans is wrong\n");
+        for(int i=0;i<block_num;i++){
+            printf("%lf ",res[i]);
         }
         printf("\n");
     }

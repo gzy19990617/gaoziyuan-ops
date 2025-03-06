@@ -9,6 +9,7 @@
 
 // v7:每个线程做更多的事情,block数量更多一些
 
+// volatile 参考这个https://blog.csdn.net/seamanj/article/details/78453897
 __device__ void warpReduce(volatile float* s_data, int tid)  // 此处不加volatile会有diff
 {
     s_data[tid] += s_data[tid + 32];
@@ -21,7 +22,8 @@ __device__ void warpReduce(volatile float* s_data, int tid)  // 此处不加vola
 
 template<unsigned int NUM_PER_BLOCK>
 __global__ void reduce1(float* d_a, float* d_out) {
-    volatile __shared__ float s_a[THREAD_PER_BLOCK]; // 此处不加volatile会有diff
+    
+    __shared__ float s_a[THREAD_PER_BLOCK]; // 此处不加volatile会有diff
 
     int tid = threadIdx.x;
     float* input_begein = d_a + blockIdx.x * NUM_PER_BLOCK;

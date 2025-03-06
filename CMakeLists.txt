@@ -18,90 +18,90 @@ set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS}  \
 set(CMAKE_CUDA_ARCHITECTURES 70 75 80 86)
 
 
-# reduce
-add_executable(reduce_v0
-    reduce/reduce_v0.cu
-)
-target_link_libraries(
-    reduce_v0 PUBLIC
-    -lcudart
-    -lcudadevrt)
-# reduce
-add_executable(reduce_v1
-    reduce/reduce_v1.cu
-)
-target_link_libraries(
-    reduce_v1 PUBLIC
-    -lcudart
-    -lcudadevrt)
-# reduce
-add_executable(reduce_v2
-    reduce/reduce_v2.cu
-)
-target_link_libraries(
-    reduce_v2 PUBLIC
-    -lcudart
-    -lcudadevrt)
-# reduce
-add_executable(reduce_v3
-    reduce/reduce_v3.cu
-)
-target_link_libraries(
-    reduce_v3 PUBLIC
-    -lcudart
-    -lcudadevrt)
+// # reduce
+// add_executable(reduce_v0
+//     reduce/reduce_v0.cu
+// )
+// target_link_libraries(
+//     reduce_v0 PUBLIC
+//     -lcudart
+//     -lcudadevrt)
+// # reduce
+// add_executable(reduce_v1
+//     reduce/reduce_v1.cu
+// )
+// target_link_libraries(
+//     reduce_v1 PUBLIC
+//     -lcudart
+//     -lcudadevrt)
+// # reduce
+// add_executable(reduce_v2
+//     reduce/reduce_v2.cu
+// )
+// target_link_libraries(
+//     reduce_v2 PUBLIC
+//     -lcudart
+//     -lcudadevrt)
+// # reduce
+// add_executable(reduce_v3
+//     reduce/reduce_v3.cu
+// )
+// target_link_libraries(
+//     reduce_v3 PUBLIC
+//     -lcudart
+//     -lcudadevrt)
 
-# reduce
-add_executable(reduce_v4
-    reduce/reduce_v4.cu
-)
-target_link_libraries(
-    reduce_v4 PUBLIC
-    -lcudart
-    -lcudadevrt)
+// # reduce
+// add_executable(reduce_v4
+//     reduce/reduce_v4.cu
+// )
+// target_link_libraries(
+//     reduce_v4 PUBLIC
+//     -lcudart
+//     -lcudadevrt)
 
-# reduce
-add_executable(reduce_v4_2
-    reduce/reduce_v4_2.cu
-)
-target_link_libraries(
-    reduce_v4_2 PUBLIC
-    -lcudart
-    -lcudadevrt)
+// # reduce
+// add_executable(reduce_v4_2
+//     reduce/reduce_v4_2.cu
+// )
+// target_link_libraries(
+//     reduce_v4_2 PUBLIC
+//     -lcudart
+//     -lcudadevrt)
 
-# reduce
-add_executable(reduce_v5
-    reduce/reduce_v5.cu
-)
-target_link_libraries(
-    reduce_v5 PUBLIC
-    -lcudart
-    -lcudadevrt)
+// # reduce
+// add_executable(reduce_v5
+//     reduce/reduce_v5.cu
+// )
+// target_link_libraries(
+//     reduce_v5 PUBLIC
+//     -lcudart
+//     -lcudadevrt)
 
-# reduce
-add_executable(reduce_v6
-    reduce/reduce_v6.cu
-)
-target_link_libraries(
-    reduce_v6 PUBLIC
-    -lcudart
-    -lcudadevrt)
+// # reduce
+// add_executable(reduce_v6
+//     reduce/reduce_v6.cu
+// )
+// target_link_libraries(
+//     reduce_v6 PUBLIC
+//     -lcudart
+//     -lcudadevrt)
 
-# reduce
-add_executable(reduce_v7
-    reduce/reduce_v7.cu
-)
-target_link_libraries(
-    reduce_v7 PUBLIC
-    -lcudart
-    -lcudadevrt)
+// # reduce
+// add_executable(reduce_v7
+//     reduce/reduce_v7.cu
+// )
+// target_link_libraries(
+//     reduce_v7 PUBLIC
+//     -lcudart
+//     -lcudadevrt)
 
-# reduce
-add_executable(reduce_v8
-    reduce/reduce_v8.cu
-)
-target_link_libraries(
-    reduce_v8 PUBLIC
-    -lcudart
-    -lcudadevrt)
+// # reduce
+// add_executable(reduce_v8
+//     reduce/reduce_v8.cu
+// )
+// target_link_libraries(
+//     reduce_v8 PUBLIC
+//     -lcudart
+//     -lcudadevrt)
 
