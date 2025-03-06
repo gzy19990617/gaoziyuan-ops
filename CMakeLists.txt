@@ -105,3 +105,31 @@ target_link_libraries(
     -lcudart
     -lcudadevrt)]]
 
+
+# sgemm
+add_executable(sgemm_v0
+    sgemm/sgemm_v0.cu
+)
+target_link_libraries(
+    sgemm_v0 PUBLIC
+    -lcudart
+    -lcudadevrt)
+
+add_executable(sgemm_v1
+    sgemm/sgemm_v1.cu
+)
+target_link_libraries(
+    sgemm_v1 PUBLIC
+    -lcudart
+    -lcudadevrt)
+
+add_executable(sgemm_v2
+    sgemm/sgemm_v2.cu
+)
+target_link_libraries(
+    sgemm_v2 PUBLIC
+    -lcudart
+    -lcudadevrt)
+
+
+
