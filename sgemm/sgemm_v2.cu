@@ -1,9 +1,4 @@
 
-
-
-
-
-
 #include <iostream>
 #include <cuda_runtime.h>
 #include <cmath>
@@ -12,7 +7,7 @@
 
 #define NUM 512
 
-//v2:增加每一个线程的工作
+//v2:增加每一个线程的工作,一个线程负责处理 STEP * STEP 个元素，平均分为4块，每次负责每一块的第一个元素
 
 template <unsigned int BLOCKSIZE, unsigned int STRIDE>
 __global__ void matrixMulCUDA(float* C,  float* A,  float* B, int M, int N, int K) {
@@ -37,6 +32,7 @@ __global__ void matrixMulCUDA(float* C,  float* A,  float* B, int M, int N, int 
     for (int s = 0; s < K; s += STEP) {
         // a_shared[threadIdx.y][threadIdx.x] = A[y * K + threadIdx.x + s];
         // b_shared[threadIdx.y][threadIdx.x] = B[(s + threadIdx.y) * N + x];
+        // 搬运到share memory
         for (int i = 0; i < STRIDE; i++)  {
             for (int j = 0; j < STRIDE; j++) {
                 a_shared[ty + i * BLOCKSIZE][tx + j * BLOCKSIZE] = A[(y + i * BLOCKSIZE) * K + tx + BLOCKSIZE * j + s];
@@ -55,8 +51,9 @@ __global__ void matrixMulCUDA(float* C,  float* A,  float* B, int M, int N, int 
 
         __syncthreads();
     }
-     for (int i = 0; i < STRIDE; i++)  {
-            for (int j = 0; j < STRIDE; j++) {
+     for (int i = 0; i < STRIDE; i++)  { // 第一个for y方向，代表行数
+            for (int j = 0; j < STRIDE; j++) { // 第二个for x方向，代表列数
+                // 全局的y，遍历其他4个元素
                 C[(y + i * BLOCKSIZE) * N  + x + j * BLOCKSIZE] += value[i][j];
             }
         }
