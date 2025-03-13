@@ -139,5 +139,29 @@ target_link_libraries(
     -lcudart
     -lcudadevrt)
 
+add_executable(sgemm_v4
+    sgemm/sgemm_v4.cu
+)
+target_link_libraries(
+    sgemm_v4 PUBLIC
+    -lcudart
+    -lcudadevrt)
+
+add_executable(sgemm_v5
+    sgemm/sgemm_v5.cu
+)
+target_link_libraries(
+    sgemm_v5 PUBLIC
+    -lcudart
+    -lcudadevrt)
+
+add_executable(sgemm_v6
+    sgemm/sgemm_v6.cu
+)
+target_link_libraries(
+    sgemm_v6 PUBLIC
+    -lcudart
+    -lcudadevrt)
+
 
 

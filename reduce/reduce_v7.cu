@@ -7,7 +7,7 @@
 
 #define THREAD_PER_BLOCK 256
 
-// v7:每个线程做更多的事情,block数量更多一些
+// v7:每个线程做更多的事情, block数量更多一些
 
 // volatile 参考这个https://blog.csdn.net/seamanj/article/details/78453897
 __device__ void warpReduce(volatile float* s_data, int tid)  // 此处不加volatile会有diff
