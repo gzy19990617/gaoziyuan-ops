@@ -163,5 +163,14 @@ target_link_libraries(
     -lcudart
     -lcudadevrt)
 
+add_executable(sgemm_v7
+    sgemm/sgemm_v7.cu
+)
+target_link_libraries(
+    sgemm_v7 PUBLIC
+    -lcudart
+    -lcudadevrt)
+
+
 
 
