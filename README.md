@@ -17,3 +17,11 @@ https://github.com/gzy19990617/How_to_optimize_in_GPU/blob/master/reduce/README.
 warp divergence
 bank conflict
 shuffle
+
+
+
+# 合并访存优化
+一个线程束对全局内存的一次访问导致最少的数据传输，则称访问为合并访存。
+
+
+

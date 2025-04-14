@@ -172,5 +172,30 @@ target_link_libraries(
     -lcudadevrt)
 
 
+add_executable(add_profile
+    kernel_profiling/add.cu
+)
+target_link_libraries(
+    add_profile PUBLIC
+    -lcudart
+    -lcudadevrt)
+
+
+add_executable(transpose_v1
+    transpose/transpose_v1.cu
+)
+target_link_libraries(
+    transpose_v1 PUBLIC
+    -lcudart
+    -lcudadevrt)
+
+
+add_executable(transpose_v2
+    transpose/transpose_v2.cu
+)
+target_link_libraries(
+    transpose_v2 PUBLIC
+    -lcudart
+    -lcudadevrt)
 
 
