@@ -21,9 +21,6 @@ graph TB
 
 
 
-
-
-
 Sector:通常以 32 字节（Byte） 为一个扇区（Sector），这是最小访问粒度。
 
 一个 Warp（32 线程）访问连续的 128 字节对齐内存块（例如 float 类型，32 线程 × 4 字节 = 128 字节），若warp内线程访问连续128字节区域→合并为1次事务
@@ -36,3 +33,21 @@ Sector:通常以 32 字节（Byte） 为一个扇区（Sector），这是最小�
 
 ## 使用ncu
 /usr/local/NVIDIA-Nsight-Compute-2025.1/ncu --set full -o profile ./add_profile
+
+
+
+# occupancy
+
+Occupancy指的是在任意给定时刻，GPU上活跃的线程束（warps）数量与GPU理论上支持的最大活跃线程束数量的比率。简单说，它表示GPU计算资源的利用程度。
+
+Occupancy = 活跃线程束数量 / 最大可能的活跃线程束数量
+
+1.用户设置的block大小会影响实际sm上可以容纳的warp数量：每一个block必须在一个sm中
+
+2.CUDA 的隐藏延迟：一个warp处于等待状态时候会立刻切到下一个Warp，与cpu不同，不需要切换上文，因为gpu有大量寄存器，此时每个sm的寄存器数量有上限，也会成为开启多个warp的一个指标
+
+3.共享内存也有固定大小，也影响warp数量
+
+
+# warp scheduler
+(todo)
