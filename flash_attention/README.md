@@ -32,6 +32,8 @@ flash_attention着眼于减少IO操作，目标是避免Attention从HBM的读写
 随着序列长度N增大，缓存N^2增长变为随着N线性增长。
 
 ## softmax分块进行
+计算公式：
+https://github.com/gzy19990617/gaoziyuan-ops/blob/main/flash_attention/tiling_softmax.jpg
 
 
 
